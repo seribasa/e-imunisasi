@@ -258,9 +258,33 @@ void main() {
     );
 
     blocTest<ChildProfileBloc, ChildProfileState>(
-      "failed",
+      "failed throw default Exception",
+      seed: () => ChildProfileState(child: child),
       build: () {
-        when(mockChildRepository.setChild(child)).thenThrow(Exception());
+        when(mockChildRepository.updateChild(child)).thenThrow(Exception());
+        return ChildProfileBloc(mockChildRepository);
+      },
+      act: (bloc) => bloc.add(UpdateProfileEvent()),
+      expect: () => [
+        ChildProfileState(
+          child: child,
+          statusUpdate: FormzSubmissionStatus.inProgress,
+        ),
+        ChildProfileState(
+          child: child,
+          statusUpdate: FormzSubmissionStatus.failure,
+          errorMessage: 'Gagal memperbarui profil anak',
+        )
+      ],
+    );
+
+    blocTest<ChildProfileBloc, ChildProfileState>(
+      "failed throw FormatException when child data is null",
+      seed: () => ChildProfileState(child: null),
+      build: () {
+        when(mockChildRepository.updateChild(child)).thenThrow(
+          FormatException('Data anak tidak boleh kosong'),
+        );
         return ChildProfileBloc(mockChildRepository);
       },
       act: (bloc) => bloc.add(UpdateProfileEvent()),
@@ -270,7 +294,34 @@ void main() {
         ),
         ChildProfileState(
           statusUpdate: FormzSubmissionStatus.failure,
-          errorMessage: 'Gagal memperbarui profil anak',
+          errorMessage: 'Data anak tidak boleh kosong',
+        )
+      ],
+    );
+
+    blocTest<ChildProfileBloc, ChildProfileState>(
+      "failed throw FormatException when name length is invalid",
+      build: () {
+        when(mockChildRepository.updateChild(child.copyWith(
+          nama: 'a', // Invalid name length
+        ))).thenThrow(
+          FormatException('Panjang nama harus antara 2-128 karakter'),
+        );
+        return ChildProfileBloc(mockChildRepository);
+      },
+      act: (bloc) => bloc.add(UpdateProfileEvent()),
+      seed: () => ChildProfileState(
+        child: child.copyWith(nama: 'a'), // Set initial state with invalid name
+      ),
+      expect: () => [
+        ChildProfileState(
+          child: child.copyWith(nama: 'a'),
+          statusUpdate: FormzSubmissionStatus.inProgress,
+        ),
+        ChildProfileState(
+          child: child.copyWith(nama: 'a'),
+          statusUpdate: FormzSubmissionStatus.failure,
+          errorMessage: 'Panjang nama harus antara 2-128 karakter',
         )
       ],
     );
@@ -322,9 +373,12 @@ void main() {
     );
 
     blocTest<ChildProfileBloc, ChildProfileState>(
-      "failed",
+      "failed throw FormatException when child data is null",
+      seed: () => ChildProfileState(child: null),
       build: () {
-        when(mockChildRepository.setChild(child)).thenThrow(Exception());
+        when(mockChildRepository.setChild(child)).thenThrow(
+          FormatException('Data anak tidak boleh kosong'),
+        );
         return ChildProfileBloc(mockChildRepository);
       },
       act: (bloc) => bloc.add(CreateProfileEvent()),
@@ -333,6 +387,56 @@ void main() {
           statusCreate: FormzSubmissionStatus.inProgress,
         ),
         ChildProfileState(
+          statusCreate: FormzSubmissionStatus.failure,
+          errorMessage: 'Data anak tidak boleh kosong',
+        )
+      ],
+    );
+
+    blocTest<ChildProfileBloc, ChildProfileState>(
+      "failed throw FormatException when name length is invalid",
+      build: () {
+        when(mockChildRepository.setChild(child.copyWith(
+          nama: 'a', // Invalid name length
+        ))).thenThrow(
+          FormatException('Panjang nama harus antara 2-128 karakter'),
+        );
+        return ChildProfileBloc(mockChildRepository);
+      },
+      act: (bloc) => bloc.add(CreateProfileEvent()),
+      seed: () => ChildProfileState(
+        child: child.copyWith(nama: 'a'), // Set initial state with invalid name
+      ),
+      expect: () => [
+        ChildProfileState(
+          child: child.copyWith(nama: 'a'),
+          statusCreate: FormzSubmissionStatus.inProgress,
+        ),
+        ChildProfileState(
+          child: child.copyWith(nama: 'a'),
+          statusCreate: FormzSubmissionStatus.failure,
+          errorMessage: 'Panjang nama harus antara 2-128 karakter',
+        )
+      ],
+    );
+
+    blocTest<ChildProfileBloc, ChildProfileState>(
+      "failed throw Exception",
+      build: () {
+        when(mockChildRepository.setChild(child)).thenThrow(
+          Exception('Gagal membuat profil anak'),
+        );
+        return ChildProfileBloc(mockChildRepository);
+      },
+      seed: () => ChildProfileState(child: child),
+      act: (bloc) => bloc.add(CreateProfileEvent()),
+      expect: () => [
+        ChildProfileState(
+          child: child,
+          statusCreate: FormzSubmissionStatus.inProgress,
+        ),
+        ChildProfileState(
+          child: child,
           statusCreate: FormzSubmissionStatus.failure,
           errorMessage: 'Gagal membuat profil anak',
         )

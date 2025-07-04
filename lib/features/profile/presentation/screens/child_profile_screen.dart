@@ -174,8 +174,7 @@ class _ChildProfileScaffold extends StatelessWidget {
                           VerticalSpacer(),
                           DropdownPeltops(
                             label: AppConstant.LABEL_GENDER,
-                            initialValue:
-                                child?.jenisKelamin ?? emptyString,
+                            initialValue: child?.jenisKelamin ?? emptyString,
                             listItem: Gender.values
                                 .map((e) => Pair(e.name, e.value))
                                 .toList(),
@@ -255,7 +254,9 @@ class _SaveButton extends StatelessWidget {
     return BlocBuilder<ChildProfileBloc, ChildProfileState>(
       builder: (context, state) {
         return ButtonCustom(
-          loading: state.statusUpdate.isInProgress,
+          loading: state.statusUpdate.isInProgress ||
+              state.statusUpdateAvatar.isInProgress ||
+              state.statusCreate.isInProgress,
           child: ButtonText(text: AppConstant.SAVE),
           onPressed: () async {
             dismissKeyboard(context);
