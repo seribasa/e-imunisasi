@@ -54,7 +54,15 @@ class _CalendarScaffold extends StatelessWidget {
           )
         ],
       ),
-      body: BlocBuilder<CalendarBloc, CalendarState>(
+      body: BlocConsumer<CalendarBloc, CalendarState>(
+        listenWhen: (previous, current) =>
+            previous.status != current.status ||
+            previous.statusDeleteEvent != current.statusDeleteEvent,
+        listener: (context, state) {
+          if (state.status == FormzSubmissionStatus.failure) {
+            snackbarCustom(AppConstant.ERROR_OCCURRED).show(context);
+          }
+        },
         builder: (context, state) {
           if (state.status == FormzSubmissionStatus.failure) {
             return Center(child: Text('Error'));
