@@ -325,6 +325,33 @@ void main() {
         )
       ],
     );
+
+    blocTest<ChildProfileBloc, ChildProfileState>(
+      "failed throw FormatException when date of birth is null",
+      build: () {
+        when(mockChildRepository.updateChild(child.copyWith(
+          tanggalLahir: null, // Invalid date of birth
+        ))).thenThrow(
+          FormatException('Tanggal lahir tidak boleh kosong'),
+        );
+        return ChildProfileBloc(mockChildRepository);
+      },
+      act: (bloc) => bloc.add(UpdateProfileEvent()),
+      seed: () => ChildProfileState(
+        child: child.copyWith(tanggalLahir: null), // Set initial state with invalid date of birth
+      ),
+      expect: () => [
+        ChildProfileState(
+          child: child.copyWith(tanggalLahir: null),
+          statusUpdate: FormzSubmissionStatus.inProgress,
+        ),
+        ChildProfileState(
+          child: child.copyWith(tanggalLahir: null),
+          statusUpdate: FormzSubmissionStatus.failure,
+          errorMessage: 'Tanggal lahir tidak boleh kosong',
+        )
+      ],
+    );
   });
 
   group("OnCreateChildEvent", () {
@@ -439,6 +466,33 @@ void main() {
           child: child,
           statusCreate: FormzSubmissionStatus.failure,
           errorMessage: 'Gagal membuat profil anak',
+        )
+      ],
+    );
+
+    blocTest<ChildProfileBloc, ChildProfileState>(
+      "failed throw FormatException when date of birth is null",
+      build: () {
+        when(mockChildRepository.setChild(child.copyWith(
+          tanggalLahir: null, // Invalid date of birth
+        ))).thenThrow(
+          FormatException('Tanggal lahir tidak boleh kosong'),
+        );
+        return ChildProfileBloc(mockChildRepository);
+      },
+      act: (bloc) => bloc.add(CreateProfileEvent()),
+      seed: () => ChildProfileState(
+        child: child.copyWith(tanggalLahir: null), // Set initial state with invalid date of birth
+      ),
+      expect: () => [
+        ChildProfileState(
+          child: child.copyWith(tanggalLahir: null),
+          statusCreate: FormzSubmissionStatus.inProgress,
+        ),
+        ChildProfileState(
+          child: child.copyWith(tanggalLahir: null),
+          statusCreate: FormzSubmissionStatus.failure,
+          errorMessage: 'Tanggal lahir tidak boleh kosong',
         )
       ],
     );

@@ -103,6 +103,10 @@ class ChildProfileBloc extends Bloc<ChildProfileEvent, ChildProfileState> {
           (state.child?.nama?.length ?? 0) > 128) {
         throw FormatException('Panjang nama harus antara 2-128 karakter');
       }
+
+      if (state.child?.tanggalLahir == null) {
+        throw FormatException('Tanggal lahir tidak boleh kosong');
+      }
       await _childRepository.updateChild(state.child!);
       add(OnGetChildrenEvent());
       emit(state.copyWith(statusUpdate: FormzSubmissionStatus.success));
@@ -134,6 +138,10 @@ class ChildProfileBloc extends Bloc<ChildProfileEvent, ChildProfileState> {
       if ((state.child?.nama?.length ?? 0) < 2 ||
           (state.child?.nama?.length ?? 0) > 128) {
         throw FormatException('Panjang nama harus antara 2-128 karakter');
+      }
+
+      if (state.child?.tanggalLahir == null) {
+        throw FormatException('Tanggal lahir tidak boleh kosong');
       }
       await _childRepository.setChild(state.child!);
       add(OnGetChildrenEvent());
