@@ -95,13 +95,29 @@ class ChildProfileBloc extends Bloc<ChildProfileEvent, ChildProfileState> {
   void _onUpdateChildEvent(UpdateProfileEvent event, Emitter emit) async {
     emit(state.copyWith(statusUpdate: FormzSubmissionStatus.inProgress));
     try {
-      if (state.child == null) throw 'Data anak tidak ditemukan';
+      if (state.child == null) {
+        throw FormatException('Data anak tidak boleh kosong');
+      }
+
+      if ((state.child?.nama?.length ?? 0) < 2 ||
+          (state.child?.nama?.length ?? 0) > 128) {
+        throw FormatException('Panjang nama harus antara 2-128 karakter');
+      }
       await _childRepository.updateChild(state.child!);
       add(OnGetChildrenEvent());
       emit(state.copyWith(statusUpdate: FormzSubmissionStatus.success));
       emit(state.copyWith(
           child: null, statusUpdate: FormzSubmissionStatus.initial));
     } catch (e) {
+      if (e is FormatException) {
+        emit(
+          state.copyWith(
+            statusUpdate: FormzSubmissionStatus.failure,
+            errorMessage: e.message,
+          ),
+        );
+        return;
+      }
       emit(state.copyWith(
           statusUpdate: FormzSubmissionStatus.failure,
           errorMessage: 'Gagal memperbarui profil anak'));
@@ -111,7 +127,14 @@ class ChildProfileBloc extends Bloc<ChildProfileEvent, ChildProfileState> {
   void _onCreateChildEvent(CreateProfileEvent event, Emitter emit) async {
     emit(state.copyWith(statusCreate: FormzSubmissionStatus.inProgress));
     try {
-      if (state.child == null) throw 'Data anak tidak ditemukan';
+      if (state.child == null) {
+        throw FormatException('Data anak tidak boleh kosong');
+      }
+
+      if ((state.child?.nama?.length ?? 0) < 2 ||
+          (state.child?.nama?.length ?? 0) > 128) {
+        throw FormatException('Panjang nama harus antara 2-128 karakter');
+      }
       await _childRepository.setChild(state.child!);
       add(OnGetChildrenEvent());
       emit(
@@ -122,10 +145,20 @@ class ChildProfileBloc extends Bloc<ChildProfileEvent, ChildProfileState> {
       );
       emit(state.copyWith(statusCreate: FormzSubmissionStatus.initial));
     } catch (e) {
+      if (e is FormatException) {
+        emit(
+          state.copyWith(
+            statusCreate: FormzSubmissionStatus.failure,
+            errorMessage: e.message,
+          ),
+        );
+        return;
+      }
       emit(
         state.copyWith(
-            statusCreate: FormzSubmissionStatus.failure,
-            errorMessage: 'Gagal membuat profil anak'),
+          statusCreate: FormzSubmissionStatus.failure,
+          errorMessage: 'Gagal membuat profil anak',
+        ),
       );
     }
   }
