@@ -205,7 +205,7 @@ void main() {
     );
 
     blocTest<ProfileBloc, ProfileState>(
-      "failed",
+      "failed if insertUserToDatabase throws",
       build: () {
         when(mockAuthRepository.insertUserToDatabase(user: user))
             .thenThrow(Exception());
@@ -220,6 +220,58 @@ void main() {
         ),
         ProfileState(
           user: user,
+          statusUpdate: FormzSubmissionStatus.failure,
+        )
+      ],
+    );
+
+    blocTest<ProfileBloc, ProfileState>(
+      "failed if user - mom name is empty",
+      build: () {
+        return ProfileBloc(mockAuthRepository);
+      },
+      seed: () => ProfileState(user: user.copyWith(
+        momName: '',
+      )),
+      act: (bloc) => bloc.add(ProfileUpdateEvent()),
+      expect: () => [
+        ProfileState(
+          user: user.copyWith(
+            momName: '',
+          ),
+          statusUpdate: FormzSubmissionStatus.inProgress,
+        ),
+        ProfileState(
+          user: user.copyWith(
+            momName: '',
+          ),
+          errorMessage: 'Nama tidak boleh kosong',
+          statusUpdate: FormzSubmissionStatus.failure,
+        )
+      ],
+    );
+
+    blocTest<ProfileBloc, ProfileState>(
+      "failed if user - dad name is empty",
+      build: () {
+        return ProfileBloc(mockAuthRepository);
+      },
+      seed: () => ProfileState(user: user.copyWith(
+        dadName: '',
+      )),
+      act: (bloc) => bloc.add(ProfileUpdateEvent()),
+      expect: () => [
+        ProfileState(
+          user: user.copyWith(
+            dadName: '',
+          ),
+          statusUpdate: FormzSubmissionStatus.inProgress,
+        ),
+        ProfileState(
+          user: user.copyWith(
+            dadName: '',
+          ),
+          errorMessage: 'Nama tidak boleh kosong',
           statusUpdate: FormzSubmissionStatus.failure,
         )
       ],

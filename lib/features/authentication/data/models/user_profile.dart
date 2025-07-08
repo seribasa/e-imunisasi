@@ -39,6 +39,9 @@ class UserProfile extends Equatable {
     this.noKTP,
   });
 
+  get isNameEmpty =>
+      (momName?.isEmpty ?? false) || (dadName?.isEmpty ?? false);
+
   factory UserProfile.fromSeribase(Map<String, dynamic> data) {
     return UserProfile(
       uid: data['user_id'],

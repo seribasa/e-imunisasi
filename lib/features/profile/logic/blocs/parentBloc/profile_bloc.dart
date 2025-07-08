@@ -106,6 +106,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         ));
         return;
       }
+      
+      if (state.user?.isNameEmpty == true) {
+        emit(state.copyWith(
+          statusUpdate: FormzSubmissionStatus.failure,
+          errorMessage: 'Nama tidak boleh kosong',
+        ));
+        return;
+      }
       await _authRepository.insertUserToDatabase(user: state.user!);
       emit(state.copyWith(statusUpdate: FormzSubmissionStatus.success));
     } catch (e) {
