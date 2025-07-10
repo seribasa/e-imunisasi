@@ -11,6 +11,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/utils/themes/shape.dart';
+import '../../../../core/widgets/button_custom.dart';
 import '../../../authentication/logic/bloc/authentication_bloc/authentication_bloc.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -62,15 +63,44 @@ class ProfilePage extends StatelessWidget {
 class _LogoutButton extends StatelessWidget {
   const _LogoutButton({Key? key}) : super(key: key);
 
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Logout'),
+          content: const Text('Are you sure you want to logout?'),
+          actions: [
+            ButtonCustom(
+              onPressed: () => context.pop(),
+              child: const ButtonText(text: AppConstant.CANCEL),
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: TextButton(
+                onPressed: () {
+                  context.pop();
+                  context.read<AuthenticationBloc>().add(LoggedOut());
+                },
+                child: Text(
+                  AppConstant.LOGOUT_LABEL,
+                  style: TextStyle(color: Colors.pink[400]),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
       color: Theme.of(context).primaryColor,
       child: ListTile(
-        onTap: () {
-          context.read<AuthenticationBloc>().add(LoggedOut());
-        },
+        onTap: () => _showLogoutDialog(context),
         title: LabelText(
           text: AppConstant.LOGOUT_LABEL,
           color: Colors.white,
