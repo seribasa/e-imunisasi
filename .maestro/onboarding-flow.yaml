@@ -1,0 +1,9 @@
+appId: com.peltops.e_imunisasi.debug
+---
+- launchApp:
+    clearState: true
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn: Selanjutnya
+- tapOn: Ayo Mulai
+- assertVisible: Masuk dengan Seribase
