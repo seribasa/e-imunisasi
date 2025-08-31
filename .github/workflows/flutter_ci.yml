@@ -115,7 +115,7 @@ jobs:
         with:
           name: Maestro UI Tests (API ${{ matrix.api }})
           path: "./report.xml"
-          reporter: junit
+          reporter: java-junit
           fail-on-error: true
   
   merge-test-report:
@@ -146,5 +146,5 @@ jobs:
         with:
           name: Merged Maestro UI Test Report
           path: ./merged-reports/merged-report.xml
-          reporter: junit
+          reporter: java-junit
           fail-on-error: true
