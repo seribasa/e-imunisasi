@@ -78,6 +78,10 @@ jobs:
 
   ui-tests:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write
     strategy:
       fail-fast: false
       matrix:
@@ -121,6 +125,10 @@ jobs:
   merge-test-report:
     name: Merge Test Reports
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write
     needs: ui-tests
     steps:
       - name: Check out repository
