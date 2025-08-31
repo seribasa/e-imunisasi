@@ -79,7 +79,9 @@ jobs:
   ui-tests:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      id-token: write
+      contents: read
+      checks: write
       pull-requests: write
       repository-projects: write
     strategy:
@@ -126,7 +128,9 @@ jobs:
     name: Merge Test Reports
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      id-token: write
+      contents: read
+      checks: write
       pull-requests: write
       repository-projects: write
     needs: ui-tests
