@@ -108,6 +108,6 @@ jobs:
         if: success() || failure()
         with:
           name: Maestro UI Tests (API ${{ matrix.api }})
-          path: "/home/runner/.maestro/tests/**/*.xml"
+          path: "/home/runner/.maestro/tests/report.xml"
           reporter: java-junit
           fail-on-error: true
