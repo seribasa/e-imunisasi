@@ -1,0 +1,56 @@
+appId: com.android.chrome
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: signin_fre_continue_button
+    timeout: 100000
+- tapOn:
+    id: signin_fre_continue_button
+- tapOn:
+    id: button_primary
+- tapOn:
+    id: ack_button
+- tapOn:
+    id: search_box
+- inputText: Github
+- tapOn:
+    text: github
+    index: 1
+- tapOn: https://github.com
+- tapOn: Sign in
+- tapOn:
+    text: Username or email address
+    index: 1
+- tapOn:
+    id: touch_to_fill_button_title
+- extendedWaitUntil:
+    visible: Open global navigation menu
+    timeout: 10000
+- tapOn: Open global navigation menu
+- extendedWaitUntil:
+    visible: seribasa/e-imunisasi
+    timeout: 10000
+- tapOn: seribasa/e-imunisasi
+- scrollUntilVisible:
+    element: Download APK with Midtrans Payment
+- tapOn:
+    text: Download APK with Midtrans Payment
+- tapOn:
+    id: menu_button
+- tapOn:
+    id: downloads_menu_id
+- extendedWaitUntil:
+    notVisible:
+      id: action_button
+    timeout: 100000000
+- tapOn: app-midtrans-v1.2.0-debug.apk
+- extendedWaitUntil:
+    visible: Install
+    timeout: 10000
+- tapOn: Install
+- extendedWaitUntil:
+    visible:
+      id: install_success
+    timeout: 100000
