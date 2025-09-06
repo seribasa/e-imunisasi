@@ -1,0 +1,10 @@
+appId: com.peltops.e_imunisasi.debug
+---
+- launchApp
+- extendedWaitUntil:
+    visible: PIN
+    timeout: 100000
+- tapOn: PIN
+- inputText: '1234'
+- tapOn: Selanjutnya
+- tapOn: Kalender
