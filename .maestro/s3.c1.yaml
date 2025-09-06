@@ -1,0 +1,34 @@
+appId: com.peltops.e_imunisasi.debug
+---
+- launchApp
+- extendedWaitUntil:
+    visible: Masuk dengan Seribase
+    timeout: 1000000
+- tapOn: Masuk dengan Seribase
+- tapOn: Register
+- tapOn:
+    text: Email
+    index: 1
+- inputText: balqisslailaa@gmail.com
+- tapOn:
+    text: Password
+    index: 1
+- inputText: Banda10.
+- tapOn:
+    text: Confirm password
+    index: 1
+- inputText: Banda10.
+- tapOn:
+    id: input_method_nav_back
+- tapOn:
+    text: First name
+    index: 1
+- inputText: Laila
+- tapOn:
+    text: Last name
+    index: 1
+- inputText: Balqiss
+- tapOn:
+    text: Register
+    index: 1
+- tapOn: Accept
