@@ -1,0 +1,4 @@
+appId: com.peltops.e_imunisasi.debug
+---
+- launchApp:
+    clearState: true
