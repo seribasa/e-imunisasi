@@ -1,0 +1,43 @@
+appId: com.android.chrome
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: signin_fre_continue_button
+    timeout: 100000
+- tapOn:
+    id: signin_fre_dismiss_button
+- tapOn:
+    id: ack_button
+- tapOn:
+    id: search_box_text
+- tapOn:
+    id: closeButton
+- inputText: github.com/seribasa/e-imunisasi
+- tapOn:
+    id: 0_resource_name_obfuscated
+    index: 3
+- extendedWaitUntil:
+    visible: main branch
+    timeout: 10000
+- scrollUntilVisible:
+    element: Download APK with Midtrans Payment
+- tapOn: Download APK with Midtrans Payment
+- tapOn:
+    id: menu_button
+- tapOn:
+    id: downloads_menu_id
+- extendedWaitUntil:
+    notVisible:
+      id: action_button
+    timeout: 100000000
+- tapOn: app-midtrans-v1.2.0-debug.apk
+- extendedWaitUntil:
+    visible: Install
+    timeout: 10000
+- tapOn: Install
+- extendedWaitUntil:
+    visible:
+      id: install_success
+    timeout: 100000
