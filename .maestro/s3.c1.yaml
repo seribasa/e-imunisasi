@@ -1,0 +1,80 @@
+appId: com.peltops.e_imunisasi.debug
+---
+- launchApp
+- clearState: com.android.chrome
+
+#landing page
+- tapOn: Selanjutnya
+- tapOn: Ayo Mulai
+- tapOn: Masuk dengan Seribase
+- waitForAnimationToEnd:
+    timeout: 100000
+
+- runFlow:
+    when:
+      visible:
+        id: signin_fre_dismiss_button
+    commands:
+      - tapOn:
+          id: signin_fre_dismiss_button
+
+- runFlow:
+    when:
+      visible: Accept & continue
+    commands:
+      - tapOn: Accept & continue
+
+- runFlow:
+    when:
+      visible: No thanks
+    commands:
+      - tapOn: No thanks
+
+- waitForAnimationToEnd:
+    timeout: 10000
+
+- runFlow:
+    when:
+      visible: Enhanced ad privacy in Chrome
+    commands:
+      - scrollUntilVisible:
+          element:
+            id: ack_button
+      - tapOn:
+          id: ack_button
+
+- tapOn: Register
+
+- runFlow:
+    when:
+      visible: Try out your stylus
+    commands:
+      - tapOn:
+          id: closeButton
+
+- extendedWaitUntil:
+    visible: First name
+    timeout: 5000
+- tapOn:
+    text: Email
+    index: 1
+- inputRandomEmail
+- tapOn: Next
+# password
+- inputText: 'Test123#'
+- tapOn: Next
+# confirm pass
+- inputText: 'Test123#'
+- tapOn: Next
+# first name
+- inputRandomPersonName
+- tapOn: Next
+# last name
+- inputRandomPersonName
+# submit
+- pressKey: Enter
+- tapOn: Accept
+- assertVisible: Email verification
+- tapOn:
+    id: close_button
+- assertVisible: Masuk dengan Seribase
