@@ -1,0 +1,7 @@
+appId: com.peltops.e_imunisasi.debug
+---
+- launchApp:
+    clearState: true
+- waitForAnimationToEnd:
+    timeout: 10000
+- assertVisible: Selamat Datang Selamat Datang di Aplikasi E-Imunisasi.Imunisasi menjadi lebih mudah, nyaman dan menyenangkan di rumah
