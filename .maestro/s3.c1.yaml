@@ -1,6 +1,7 @@
 appId: com.peltops.e_imunisasi.debug
 ---
-- launchApp
+- launchApp:
+    clearState: true
 - clearState: com.android.chrome
 
 #landing page
