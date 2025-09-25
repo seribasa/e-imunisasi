@@ -4,7 +4,7 @@ appId: com.peltops.e_imunisasi.debug
     clearState: true
 - clearState: com.android.chrome
 
-#landing page
+# landing page
 - tapOn: Selanjutnya
 - tapOn: Ayo Mulai
 - tapOn: Masuk dengan Seribase
@@ -44,6 +44,10 @@ appId: com.peltops.e_imunisasi.debug
       - tapOn:
           id: ack_button
 
+# Login Page to Register Page
+- extendedWaitUntil:
+    visible: Register
+    timeout: 10000
 - tapOn: Register
 
 - runFlow:
@@ -53,26 +57,75 @@ appId: com.peltops.e_imunisasi.debug
       - tapOn:
           id: closeButton
 
+# Register Page - Email
 - extendedWaitUntil:
     visible: First name
-    timeout: 5000
+    timeout: 10000
+
+- runFlow:
+    when:
+      visible: Try out your stylus
+    commands:
+      - tapOn:
+          id: closeButton
+
 - tapOn:
     text: Email
     index: 1
+
+- runFlow:
+    when:
+      visible: Try out your stylus
+    commands:
+      - tapOn:
+          id: closeButton
+
 - inputRandomEmail
 - tapOn: Next
-# password
+
+- runFlow:
+    when:
+      visible: Try out your stylus
+    commands:
+      - tapOn:
+          id: closeButton
+
+# Register Page - password
 - inputText: 'Test123#'
 - tapOn: Next
-# confirm pass
+
+- runFlow:
+    when:
+      visible: Try out your stylus
+    commands:
+      - tapOn:
+          id: closeButton
+
+# Register Page - confirm pass
 - inputText: 'Test123#'
 - tapOn: Next
-# first name
+
+- runFlow:
+    when:
+      visible: Try out your stylus
+    commands:
+      - tapOn:
+          id: closeButton
+
+# Register Page - first name
 - inputRandomPersonName
 - tapOn: Next
-# last name
+
+- runFlow:
+    when:
+      visible: Try out your stylus
+    commands:
+      - tapOn:
+          id: closeButton
+
+# Register Page - last name
 - inputRandomPersonName
-# submit
+# Register Page - submit
 - pressKey: Enter
 - tapOn: Accept
 - assertVisible: Email verification
