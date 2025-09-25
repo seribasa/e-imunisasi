@@ -1,0 +1,130 @@
+appId: com.peltops.e_imunisasi.debug
+---
+- launchApp:
+    clearState: true
+- clearState: com.android.chrome
+
+# landing page
+- tapOn: Selanjutnya
+- tapOn: Ayo Mulai
+- tapOn: Masuk dengan Seribase
+- waitForAnimationToEnd:
+    timeout: 100000
+
+- runFlow:
+    when:
+      visible:
+        id: signin_fre_dismiss_button
+    commands:
+      - tapOn:
+          id: signin_fre_dismiss_button
+
+- runFlow:
+    when:
+      visible: Accept & continue
+    commands:
+      - tapOn: Accept & continue
+
+- runFlow:
+    when:
+      visible: No thanks
+    commands:
+      - tapOn: No thanks
+
+- waitForAnimationToEnd:
+    timeout: 10000
+
+- runFlow:
+    when:
+      visible: Enhanced ad privacy in Chrome
+    commands:
+      - scrollUntilVisible:
+          element:
+            id: ack_button
+      - tapOn:
+          id: ack_button
+
+# Login Page to Register Page
+- extendedWaitUntil:
+    visible: Register
+    timeout: 10000
+- tapOn: Register
+
+- runFlow:
+    when:
+      visible: Try out your stylus
+    commands:
+      - tapOn:
+          id: closeButton
+
+# Register Page - Email
+- extendedWaitUntil:
+    visible: First name
+    timeout: 10000
+
+- runFlow:
+    when:
+      visible: Try out your stylus
+    commands:
+      - tapOn:
+          id: closeButton
+
+- tapOn:
+    text: Email
+    index: 1
+
+- runFlow:
+    when:
+      visible: Try out your stylus
+    commands:
+      - tapOn:
+          id: closeButton
+
+- inputText: peltopsqa@gmail.com
+- tapOn: Next
+
+- runFlow:
+    when:
+      visible: Try out your stylus
+    commands:
+      - tapOn:
+          id: closeButton
+
+# Register Page - password
+- inputText: 'Test123!'
+- tapOn: Next
+
+- runFlow:
+    when:
+      visible: Try out your stylus
+    commands:
+      - tapOn:
+          id: closeButton
+
+# Register Page - confirm pass
+- inputText: 'Test123!'
+- tapOn: Next
+
+- runFlow:
+    when:
+      visible: Try out your stylus
+    commands:
+      - tapOn:
+          id: closeButton
+
+# Register Page - first name
+- inputText: Test
+- tapOn: Next
+
+- runFlow:
+    when:
+      visible: Try out your stylus
+    commands:
+      - tapOn:
+          id: closeButton
+
+# Register Page - last name
+- inputText: QA
+# Register Page - submit
+- pressKey: Enter
+- assertVisible: Email already exists.
