@@ -42,9 +42,6 @@ appId: com.peltops.e_imunisasi.debug
           id: ack_button
 
 # Login Page to Register Page
-- extendedWaitUntil:
-    visible: Register
-    timeout: 10000
 - tapOn: Register
 
 - runFlow:
