@@ -4,12 +4,9 @@ appId: com.peltops.e_imunisasi.debug
     clearState: true
 - clearState: com.android.chrome
 
-# landing page
-- tapOn: Selanjutnya
-- tapOn: Ayo Mulai
+- runFlow: onboarding-flow.yaml
+
 - tapOn: Masuk dengan Seribase
-- waitForAnimationToEnd:
-    timeout: 100000
 
 - runFlow:
     when:
