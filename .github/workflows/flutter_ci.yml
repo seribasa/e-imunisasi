@@ -55,6 +55,9 @@ jobs:
       - name: Run build-runner
         run: flutter pub run build_runner build --delete-conflicting-outputs
 
+      - name: Setup env for tests
+        run: cp .env.dev .env
+
       - name: Run tests
         run: flutter test --coverage
 
@@ -149,6 +152,9 @@ jobs:
           KEYSTORE_KEY_ALIAS: ${{ secrets.DEBUG_KEY_ALIAS }}
           KEYSTORE_KEY_PASSWORD: ${{ secrets.DEBUG_KEY_PASSWORD }}
           KEYSTORE_STORE_PASSWORD: ${{ secrets.DEBUG_KEYSTORE_PASSWORD }}
+
+      - name: Prepare env file
+        run: cp .env.dev .env
 
       - name: Build APK
         run: flutter build ${{ matrix.target }}
