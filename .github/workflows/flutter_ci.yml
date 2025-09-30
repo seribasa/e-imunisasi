@@ -7,42 +7,53 @@ on:
 permissions: read-all
 
 jobs:
-  build:
-    name: Build ${{ matrix.target }}
+  test:
+    name: Run Tests
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        target: ["apk --debug", "appbundle --debug"]
+    outputs:
+      flutter-version: ${{ steps.read_fvm_config.outputs.flutter-version }}
     steps:
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: 17
-          distribution: "temurin"
-
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Read Version Flutter
+      - name: Read Flutter Version
         id: read_fvm_config
-        uses: juliangruber/read-file-action@v1.1.6
+        run: |
+          FLUTTER_VERSION=$(cat .fvmrc | jq -r '.flutter')
+          echo "flutter-version=$FLUTTER_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Cache Flutter SDK
+        uses: actions/cache@v4
+        id: flutter-cache
         with:
-          path: ./.fvmrc
+          path: |
+            /opt/hostedtoolcache/flutter
+            ~/.pub-cache
+          key: flutter-${{ runner.os }}-${{ steps.read_fvm_config.outputs.flutter-version }}
+          restore-keys: |
+            flutter-${{ runner.os }}-
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{fromJson(steps.read_fvm_config.outputs.content).flutter}}
+          flutter-version: ${{ steps.read_fvm_config.outputs.flutter-version }}
+          cache: true
 
-      - name: Check Flutter
-        run: flutter doctor -v
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            .dart_tool
+            .packages
+          key: flutter-deps-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            flutter-deps-${{ runner.os }}-
 
-      - name: Install Dependencies and environment
-        run: |
-          flutter pub get
-          flutter pub run build_runner build --delete-conflicting-outputs
-          cp .env.dev .env
+      - name: Install packages
+        run: flutter pub get
+
+      - name: Run build-runner
+        run: flutter pub run build_runner build --delete-conflicting-outputs
 
       - name: Run tests
         run: flutter test --coverage
@@ -55,26 +66,99 @@ jobs:
           flags: unittests
           verbose: true
 
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+    needs: test
+    strategy:
+      matrix:
+        target: [apk --debug, appbundle --debug]
+    steps:
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: "temurin"
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Cache Flutter SDK
+        uses: actions/cache@v4
+        with:
+          path: |
+            /opt/hostedtoolcache/flutter
+            ~/.pub-cache
+          key: flutter-${{ runner.os }}-${{ needs.test.outputs.flutter-version }}
+          restore-keys: |
+            flutter-${{ runner.os }}-
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ needs.test.outputs.flutter-version }}
+          cache: true
+
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            .dart_tool
+            .packages
+          key: flutter-deps-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            flutter-deps-${{ runner.os }}-
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            android/.gradle
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      - name: Install packages
+        run: flutter pub get
+
+      - name: Run build-runner
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Update local.properties
+        run: |
+          if [ -f android/local.properties ]; then
+            cp android/local.properties android/local.properties.tmp
+            grep flutter android/local.properties.tmp > android/local.properties || echo "" > android/local.properties
+          else
+            echo "" > android/local.properties
+          fi
+          echo "sdk.dir=$ANDROID_SDK_PATH" >> android/local.properties          
+          echo "flutter.compileSdkVersion=34" >> android/local.properties
+          echo "flutter.minSdkVersion=23" >> android/local.properties
+          echo "flutter.targetSdkVersion=34" >> android/local.properties
+
       - name: Configure Keystore
         run: |
-          echo "debugStoreFile=keystore/debug_keystore" >> key.properties
-          echo "debugKeyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
-          echo "debugStorePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
-          echo "debugKeyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
+          echo "debugStoreFile=keystore/debug_keystore" >> android/key.properties
+          echo "debugKeyAlias=$KEYSTORE_KEY_ALIAS" >> android/key.properties
+          echo "debugStorePassword=$KEYSTORE_STORE_PASSWORD" >> android/key.properties
+          echo "debugKeyPassword=$KEYSTORE_KEY_PASSWORD" >> android/key.properties
         env:
           KEYSTORE_KEY_ALIAS: ${{ secrets.DEBUG_KEY_ALIAS }}
           KEYSTORE_KEY_PASSWORD: ${{ secrets.DEBUG_KEY_PASSWORD }}
           KEYSTORE_STORE_PASSWORD: ${{ secrets.DEBUG_KEYSTORE_PASSWORD }}
-        working-directory: android
 
-      - name: Build
+      - name: Build APK
         run: flutter build ${{ matrix.target }}
 
-      - name: Upload apk
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: apk
           path: build/app/outputs/flutter-apk/app-debug.apk
+          retention-days: 7
 
   ui-tests:
     runs-on: ubuntu-latest
