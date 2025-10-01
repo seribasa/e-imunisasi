@@ -19,7 +19,7 @@ stop_recording() {
     local test_name=$1
     adb shell "kill -2 \$(cat /data/local/tmp/screenrecord_pid.txt)" || true
     sleep 1
-    adb pull "/data/local/tmp/maestro_${test_name}.mp4" "/home/runner/.maestro/tests/" || true
+    adb pull "/data/local/tmp/maestro_${test_name}.mp4" "$HOME/.maestro/tests/" || true
 }
 
 if [ -d "$TEST_PATH" ]; then
@@ -31,6 +31,7 @@ if [ -d "$TEST_PATH" ]; then
             start_recording "$test_name"
         fi
 
+        mkdir -p "$HOME/.maestro/tests"
         "$HOME/.maestro/bin/maestro" test --format junit --output "$HOME/.maestro/tests/report_${test_name}.xml" "$test_file" || true
 
         if [ "$RECORD" = "true" ]; then
@@ -45,6 +46,7 @@ else
         start_recording "$test_name"
     fi
 
+    mkdir -p "$HOME/.maestro/tests"
     "$HOME/.maestro/bin/maestro" test --format junit --output "$HOME/.maestro/tests/report.xml" "$TEST_PATH" || true
 
     if [ "$RECORD" = "true" ]; then
