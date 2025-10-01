@@ -198,9 +198,10 @@ jobs:
           test-path: ".maestro/s3.c1.yaml"
           report-name: "e-imunisasi-ui-test-report-api-${{ matrix.api }}"
           emulator-api: ${{ matrix.api }}
+          emulator-arch: "arm64-v8a"
           record: "true"
-          emulator-ram-size: '2048M'
-          emulator-heap-size: '1024M'
+          emulator-ram-size: "2048M"
+          emulator-heap-size: "1024M"
           emulator-disable-animations: false
 
       - name: Download Maestro Report
@@ -217,7 +218,7 @@ jobs:
           path: "./report.xml"
           reporter: java-junit
           fail-on-error: true
-  
+
   merge-test-report:
     name: Merge Test Reports
     runs-on: macos-latest
@@ -236,16 +237,16 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           # Download all artifacts with names starting with 'e-imunisasi-ui-test-report-api-'
-          pattern: 'e-imunisasi-ui-test-report-api-*'
+          pattern: "e-imunisasi-ui-test-report-api-*"
           path: ./reports
       - name: Install JUnit Report Merger
         run: npm install -g junit-report-merger
-      
+
       - name: Merge JUnit Reports
         run: |
           mkdir -p merged-reports
           junit-report-merger merged-reports/merged-report.xml 'reports/**/*.xml'
-      
+
       - name: Publish Merged Report
         uses: dorny/test-reporter@v1
         if: success() || failure()
