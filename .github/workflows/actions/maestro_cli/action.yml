@@ -87,6 +87,7 @@ runs:
               arch: ${{ inputs.emulator-arch }}
               disable-animations: ${{ inputs.emulator-disable-animations }}
               target: playstore
+              emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -accel off
               script: ${{ github.action_path }}/maestro.sh ${{ inputs.apk-path }} ${{ inputs.record }} ${{ inputs.video-res }} ${{ inputs.bit-rate }} ${{ inputs.test-path }}
 
         - name: Upload report
