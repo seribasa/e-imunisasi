@@ -167,7 +167,7 @@ jobs:
           retention-days: 7
 
   ui-tests:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     permissions:
       id-token: write
       contents: read
