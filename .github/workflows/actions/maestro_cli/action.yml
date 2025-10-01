@@ -1,0 +1,104 @@
+name: 'maestro-run'
+author: 'Theodoro Loureiro Mota'
+description: 'Run a given Maestro flow/subflow in the Android emulator. Tha action outputs a report and a video.'
+branding:
+  icon: "smartphone"
+  color: "green"
+
+inputs:
+  apk-path:
+      description: 'Full path for the apk'
+      required: true
+  test-path:
+    description: 'Path of yaml or folder containing the maestro tests'
+    required: true
+  report-name:
+    description: 'Name of the output report'
+    required: false
+    default: 'report'
+  emulator-api:
+    description: 'The android sdk version running on the emulator'
+    required: false
+    default: '31'
+  emulator-profile:
+    description: 'The emulator profile AKA device'
+    required: false
+    default: 'pixel_6_pro'
+  emulator-ram-size:
+    description: 'Ram used by the emulator'
+    required: false
+    default: '8000M'
+  emulator-heap-size:
+    description: 'Heap size used by the emulator'
+    required: false
+    default: '600M'
+  emulator-arch:
+    description: 'Architecture used by the emulator'
+    required: false
+    default: 'x86_64'
+  emulator-disable-animations:
+    description: 'Disable the animations in the emulator'
+    required: false
+    default: 'true'
+  record:
+    description: 'Record the screen during the test'
+    required: false
+    default: 'true'
+  bit-rate:
+    description: 'Bit rate for the recording'
+    required: false
+    default: '3000000'
+  video-res:
+    description: 'Resolution of the recorded video'
+    required: false
+    default: '360x780'
+
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set script permission
+      shell: bash
+      run: |
+        chmod +x ${{ github.action_path }}/maestro.sh
+
+    - name: Install Maestro
+      shell: bash
+      run: |
+        curl -fsSL "https://get.maestro.mobile.dev" | bash
+        export PATH="$PATH":"$HOME/.maestro/bin"
+        maestro --version
+
+    - name: Enable KVM
+      if: runner.os == 'Linux'
+      shell: bash
+      run: |
+        echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+        sudo udevadm control --reload-rules
+        sudo udevadm trigger --name-match=kvm
+
+    - name: run tests
+      uses: reactivecircus/android-emulator-runner@v2
+      id: test
+      with:
+        api-level: ${{ inputs.emulator-api }}
+        profile: ${{ inputs.emulator-profile }}
+        ram-size: ${{ inputs.emulator-ram-size }}
+        heap-size: ${{ inputs.emulator-heap-size }}
+        arch: ${{ inputs.emulator-arch }}
+        disable-animations: ${{ inputs.emulator-disable-animations }}
+        target: playstore
+        script: ${{ github.action_path }}/maestro.sh ${{ inputs.apk-path }} ${{ inputs.record }} ${{ inputs.video-res }} ${{ inputs.bit-rate }} ${{ inputs.test-path }}
+
+    - name: Upload report
+      uses: actions/upload-artifact@v4
+      with:
+        name: "${{ inputs.report-name }}"
+        path: |
+          /home/runner/.maestro/tests/**/*
+
+    - name: Teardown
+      shell: bash
+      if: success()
+      run: |
+          rm -rf /home/runner/.maestro/tests/

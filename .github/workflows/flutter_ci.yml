@@ -7,9 +7,9 @@ on:
 permissions: read-all
 
 jobs:
-  test:
-    name: Run Tests
-    runs-on: ubuntu-latest
+  unit-test:
+    name: Run Unit Tests
+    runs-on: macos-latest
     outputs:
       flutter-version: ${{ steps.read_fvm_config.outputs.flutter-version }}
     steps:
@@ -71,8 +71,8 @@ jobs:
 
   build:
     name: Build
-    runs-on: ubuntu-latest
-    needs: test
+    runs-on: macos-latest
+    needs: unit-test
     strategy:
       matrix:
         target: [apk --debug, appbundle --debug]
@@ -92,14 +92,14 @@ jobs:
           path: |
             /opt/hostedtoolcache/flutter
             ~/.pub-cache
-          key: flutter-${{ runner.os }}-${{ needs.test.outputs.flutter-version }}
+          key: flutter-${{ runner.os }}-${{ needs.unit-test.outputs.flutter-version }}
           restore-keys: |
             flutter-${{ runner.os }}-
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ needs.test.outputs.flutter-version }}
+          flutter-version: ${{ needs.unit-test.outputs.flutter-version }}
           cache: true
 
       - name: Cache Flutter dependencies
@@ -168,7 +168,7 @@ jobs:
           retention-days: 7
 
   ui-tests:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     permissions:
       id-token: write
       contents: read
@@ -192,14 +192,15 @@ jobs:
           path: ./
 
       - name: Run UI Tests with Maestro
-        uses: theolm/maestro-run@v0.3.1-alpha
+        uses: ./.github/workflows/actions/maestro_cli
         with:
           apk-path: "./app-debug.apk"
           test-path: ".maestro/s3.c1.yaml"
           report-name: "e-imunisasi-ui-test-report-api-${{ matrix.api }}"
           emulator-api: ${{ matrix.api }}
           record: "true"
-          emulator-heap-size: '1200M'
+          emulator-ram-size: '2048M'
+          emulator-heap-size: '1024M'
           emulator-disable-animations: false
 
       - name: Download Maestro Report
@@ -219,7 +220,7 @@ jobs:
   
   merge-test-report:
     name: Merge Test Reports
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     permissions:
       id-token: write
       contents: read
