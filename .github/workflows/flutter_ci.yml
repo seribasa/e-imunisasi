@@ -156,7 +156,18 @@ jobs:
       - name: Prepare env file
         run: cp .env.dev .env
 
+      - name: Cache APK
+        id: apk-cache
+        if: matrix.target == 'apk --debug'
+        uses: actions/cache@v4
+        with:
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          key: apk-debug${{ runner.os }}-${{ hashFiles('lib/**', 'ios/**', 'android/**', 'pubspec.yaml', 'pubspec.lock', '.env.dev') }}-${{ matrix.target }}
+          restore-keys: |
+            apk-debug${{ runner.os }}-
+
       - name: Build ${{ matrix.target }}
+        if: matrix.target != 'apk --debug' || steps.apk-cache.outputs.cache-hit != 'true'
         run: flutter build ${{ matrix.target }}
 
       - name: Upload APK
@@ -200,7 +211,7 @@ jobs:
           record: "true"
           emulator-api: ${{ matrix.api }}
           emulator-arch: "arm64-v8a"
-          emulator-profile: "pixel_9"
+          emulator-profile: "pixel_7"
           emulator-ram-size: "4096M"
           emulator-heap-size: "1024M"
           emulator-disable-animations: false
