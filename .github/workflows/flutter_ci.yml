@@ -179,7 +179,7 @@ jobs:
           retention-days: 7
 
   ui-tests:
-    runs-on: macos-latest
+    runs-on: macos-15
     permissions:
       id-token: write
       contents: read
