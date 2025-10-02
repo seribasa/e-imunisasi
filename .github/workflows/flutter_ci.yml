@@ -178,7 +178,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        api: [35]
+        api: [34]
     needs: build
 
     steps:
