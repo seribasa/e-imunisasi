@@ -87,7 +87,6 @@ runs:
               arch: ${{ inputs.emulator-arch }}
               disable-animations: ${{ inputs.emulator-disable-animations }}
               target: playstore
-              emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -accel off
               script: ${{ github.action_path }}/maestro.sh ${{ inputs.apk-path }} ${{ inputs.record }} ${{ inputs.video-res }} ${{ inputs.bit-rate }} ${{ inputs.test-path }}
 
         - name: Upload report
@@ -95,10 +94,17 @@ runs:
           with:
               name: "${{ inputs.report-name }}"
               path: |
-                  ${{ runner.home }}/.maestro/tests/**/*
+                  /home/runner/.maestro/tests/**/*
+
+        - name: Set action result
+          if: always()
+          shell: bash
+          run: |
+              chmod +x ${{ github.action_path }}/action_result.kts
+              ${{ github.action_path }}/action_result.kts /home/runner/.maestro/tests/report.xml
 
         - name: Teardown
           shell: bash
           if: success()
           run: |
-              rm -rf ${{ runner.home }}/.maestro/tests/
+              rm -rf /home/runner/.maestro/tests/

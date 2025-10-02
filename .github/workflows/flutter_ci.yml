@@ -203,14 +203,13 @@ jobs:
           path: ./
 
       - name: Run UI Tests with Maestro
-        uses: ./.github/workflows/actions/maestro_cli
+        uses: theolm/maestro-run@v0.3.1-alpha
         with:
           apk-path: "./app-debug.apk"
           test-path: ".maestro/s3.c1.yaml"
           report-name: "e-imunisasi-ui-test-report-api-${{ matrix.api }}"
           record: "true"
           emulator-api: ${{ matrix.api }}
-          emulator-arch: "x86_64"
           emulator-profile: "pixel_7"
           emulator-ram-size: "4096M"
           emulator-heap-size: "1024M"
