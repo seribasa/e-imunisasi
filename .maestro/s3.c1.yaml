@@ -41,6 +41,8 @@ appId: com.peltops.e_imunisasi.debug
       - tapOn:
           id: ack_button
 
+- waitForAnimationToEnd:
+    timeout: 10000
 # Login Page to Register Page
 - tapOn: Register
 
