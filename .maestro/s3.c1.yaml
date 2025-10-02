@@ -7,7 +7,12 @@ appId: com.peltops.e_imunisasi.debug
 
 - runFlow: onboarding-flow.yaml
 
-- tapOn: "Masuk dengan Seribase"
+- tapOn:
+    text: Masuk dengan Seribase
+    repeat: 3
+    delay: 1000
+    retryTapIfNoChange: true
+    waitToSettleTimeoutMs: 5000
 
 - tapOn: Register
 
