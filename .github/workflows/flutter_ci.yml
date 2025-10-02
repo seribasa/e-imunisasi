@@ -9,7 +9,7 @@ permissions: read-all
 jobs:
   unit-test:
     name: Run Unit Tests
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     outputs:
       flutter-version: ${{ steps.read_fvm_config.outputs.flutter-version }}
     steps:
@@ -71,7 +71,7 @@ jobs:
 
   build:
     name: Build
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     needs: unit-test
     strategy:
       matrix:
@@ -179,7 +179,7 @@ jobs:
           retention-days: 7
 
   ui-tests:
-    runs-on: macos-15
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
@@ -210,7 +210,7 @@ jobs:
           report-name: "e-imunisasi-ui-test-report-api-${{ matrix.api }}"
           record: "true"
           emulator-api: ${{ matrix.api }}
-          emulator-arch: "arm64-v8a"
+          emulator-arch: "x86_64"
           emulator-profile: "pixel_7"
           emulator-ram-size: "4096M"
           emulator-heap-size: "1024M"
@@ -233,7 +233,7 @@ jobs:
 
   merge-test-report:
     name: Merge Test Reports
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: read
