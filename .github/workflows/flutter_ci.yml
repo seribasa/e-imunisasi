@@ -197,11 +197,12 @@ jobs:
           apk-path: "./app-debug.apk"
           test-path: ".maestro/s3.c1.yaml"
           report-name: "e-imunisasi-ui-test-report-api-${{ matrix.api }}"
+          record: "true"
           emulator-api: ${{ matrix.api }}
           emulator-arch: "arm64-v8a"
-          record: "true"
+          emulator-profile: "pixel_9"
           emulator-ram-size: "4096M"
-          emulator-heap-size: "512M"
+          emulator-heap-size: "1024M"
           emulator-disable-animations: false
 
       - name: Download Maestro Report
