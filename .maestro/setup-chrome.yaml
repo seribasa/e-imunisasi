@@ -1,0 +1,35 @@
+appId: com.android.chrome
+---
+- launchApp:
+    clearState: true
+
+- runFlow:
+    when:
+      visible:
+        id: signin_fre_dismiss_button
+    commands:
+      - tapOn:
+          id: signin_fre_dismiss_button
+
+- runFlow:
+    when:
+      visible: Accept & continue
+    commands:
+      - tapOn: Accept & continue
+
+- runFlow:
+    when:
+      visible: No thanks
+    commands:
+      - tapOn: No thanks
+
+- runFlow:
+    when:
+      visible: Enhanced ad privacy in Chrome
+    commands:
+      - scrollUntilVisible:
+          element:
+            id: ack_button
+      - tapOn:
+          id: ack_button
+
