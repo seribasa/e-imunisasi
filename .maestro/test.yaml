@@ -8,7 +8,7 @@ appId: com.peltops.e_imunisasi.debug
 - launchApp
 
 - tapOn:
-    id: login_with_seribase_button
+    text: Masuk dengan Seribase
     repeat: 3
     delay: 1000
     retryTapIfNoChange: true

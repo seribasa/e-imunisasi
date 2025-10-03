@@ -54,8 +54,8 @@ class _LoginSeribaseOauthScaffold extends StatelessWidget {
             ),
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(20.0),
+        bottomNavigationBar: SafeArea(
+          minimum: const EdgeInsets.symmetric(horizontal: 20),
           child: const _LoginButton(),
         ),
       ),
