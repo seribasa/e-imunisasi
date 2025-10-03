@@ -2,10 +2,10 @@ appId: com.peltops.e_imunisasi.debug
 ---
 - runFlow: setup-chrome.yaml
 
-- launchApp:
-    clearState: true
-
 - runFlow: onboarding-flow.yaml
+
+- killApp
+- launchApp
 
 - tapOn:
     text: Masuk dengan Seribase
