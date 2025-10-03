@@ -1,0 +1,17 @@
+appId: com.peltops.e_imunisasi.debug
+---
+- runFlow: setup-chrome.yaml
+
+- runFlow: onboarding-flow.yaml
+
+- killApp
+- launchApp
+
+- tapOn:
+    text: Masuk dengan Seribase
+    repeat: 3
+    delay: 1000
+    retryTapIfNoChange: true
+    waitToSettleTimeoutMs: 5000
+
+- tapOn: Register

@@ -206,7 +206,7 @@ jobs:
         uses: theolm/maestro-run@v0.3.1-alpha
         with:
           apk-path: "./app-debug.apk"
-          test-path: ".maestro/s3.c1.yaml"
+          test-path: ".maestro/test.yaml"
           report-name: "e-imunisasi-ui-test-report-api-${{ matrix.api }}"
           record: "true"
           emulator-api: ${{ matrix.api }}
