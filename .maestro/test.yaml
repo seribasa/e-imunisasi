@@ -4,9 +4,6 @@ appId: com.peltops.e_imunisasi.debug
 
 - runFlow: onboarding-flow.yaml
 
-- killApp
-- launchApp
-
 - tapOn:
     text: Masuk dengan Seribase
     repeat: 3
