@@ -73,6 +73,7 @@ class _LoginButton extends StatelessWidget {
         context.read<LoginCubit>().logInWithSeribaseOauth();
       },
       child: const Text(
+        key: Key('login_with_seribase_button'),
         'Masuk dengan Seribase',
         style: TextStyle(fontSize: 15.0, color: Colors.white),
       ),
