@@ -161,7 +161,7 @@ jobs:
         if: matrix.target == 'apk --profile'
         uses: actions/cache@v4
         with:
-          path: build/app/outputs/flutter-apk/app-debug.apk
+          path: build/app/outputs/flutter-apk/apk-profile.apk
           key: apk-debug${{ runner.os }}-${{ hashFiles('lib/**', 'ios/**', 'android/**', 'pubspec.yaml', 'pubspec.lock', '.env.dev') }}-${{ matrix.target }}
           restore-keys: |
             apk-debug${{ runner.os }}-
@@ -175,7 +175,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: apk
-          path: build/app/outputs/flutter-apk/app-debug.apk
+          path: build/app/outputs/flutter-apk/apk-profile.apk
           retention-days: 7
 
   ui-tests:
@@ -205,7 +205,7 @@ jobs:
       - name: Run UI Tests with Maestro
         uses: theolm/maestro-run@v0.3.1-alpha
         with:
-          apk-path: "./app-debug.apk"
+          apk-path: "./apk-profile.apk"
           test-path: ".maestro/test.yaml"
           report-name: "e-imunisasi-ui-test-report-api-${{ matrix.api }}"
           record: "true"
