@@ -60,10 +60,7 @@ final router = GoRouter(
             } else if (state is Authenticated) {
               return const PasscodeScreen();
             } else if (state is Unauthenticated) {
-              if (state.isSeenOnboarding) {
-                return const LoginSeribaseOauthScreen();
-              }
-              return OnboardScreen();
+              return const LoginSeribaseOauthScreen();
             } else if (state is AuthenticationError) {
               return const LoginSeribaseOauthScreen();
             }
