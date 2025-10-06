@@ -6,6 +6,9 @@ VIDEO_RES="$3"
 BIT_RATE="$4"
 TEST_PATH="$5"
 
+# Disable Vulkan to avoid SwiftShader unsupported extension warnings
+export ANDROID_EMU_DISABLE_VULKAN=1
+
 # Wait for ADB connection and ensure emulator is ready
 echo "Waiting for emulator to be ready..."
 adb wait-for-device
@@ -69,7 +72,9 @@ stop_recording() {
 
 if [ -d "$TEST_PATH" ]; then
     # If TEST_PATH is a directory, run each .yaml file individually
+    echo "Running Maestro tests in directory: $TEST_PATH"
     for test_file in "$TEST_PATH"/*.yaml; do
+        echo "Processing test file: $test_file"
         test_name=$(basename "$test_file" .yaml)
         
         if [ "$RECORD" = "true" ]; then
@@ -97,6 +102,7 @@ if [ -d "$TEST_PATH" ]; then
     done
 else
     # Single test file
+    echo "Running single Maestro test: $TEST_PATH"
     test_name=$(basename "$TEST_PATH" .yaml)
     
     if [ "$RECORD" = "true" ]; then
