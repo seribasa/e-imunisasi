@@ -2,8 +2,9 @@ appId: com.peltops.e_imunisasi
 ---
 - runFlow: setup-chrome.yaml
 
-- runFlow: onboarding-flow.yaml
-
+- launchApp:
+    clearState: true
+    
 - tapOn:
     text: Masuk dengan Seribase
     repeat: 3
