@@ -166,8 +166,18 @@ jobs:
           restore-keys: |
             apk-debug${{ runner.os }}-
 
+      - name: Cache App Bundle
+        id: appbundle-cache
+        if: matrix.target == 'appbundle --profile'
+        uses: actions/cache@v4
+        with:
+          path: build/app/outputs/bundle/profile/app-profile.aab
+          key: appbundle-debug${{ runner.os }}-${{ hashFiles('lib/**', 'ios/**', 'android/**', 'pubspec.yaml', 'pubspec.lock', '.env.dev') }}-${{ matrix.target }}
+          restore-keys: |
+            appbundle-debug${{ runner.os }}-
+
       - name: Build ${{ matrix.target }}
-        if: matrix.target != 'apk --profile' || steps.apk-cache.outputs.cache-hit != 'true'
+        if: steps.apk-cache.outputs.cache-hit != 'true' || steps.appbundle-cache.outputs.cache-hit != 'true'
         run: flutter build ${{ matrix.target }}
 
       - name: Upload APK

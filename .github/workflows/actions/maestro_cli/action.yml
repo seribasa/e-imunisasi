@@ -84,7 +84,6 @@ runs:
               profile: ${{ inputs.emulator-profile }}
               ram-size: ${{ inputs.emulator-ram-size }}
               heap-size: ${{ inputs.emulator-heap-size }}
-              emulator-options: -no-snapshot -noaudio
               arch: ${{ inputs.emulator-arch }}
               disable-animations: ${{ inputs.emulator-disable-animations }}
               target: google_apis_playstore
