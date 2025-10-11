@@ -1,7 +1,11 @@
 name: Maestro Test
 
 on:
-  push:
+  workflow_call:
+    inputs:
+      release-tag:
+        required: false
+        type: string
 
 permissions: read-all
 
@@ -25,11 +29,18 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Get latest release version
+        if: ${{ inputs.release-tag == '' }}
         id: get_latest_release
         run: |
           LATEST_RELEASE=$(curl -s --location https://api.github.com/repos/peltops/e-imunisasi/releases/latest | grep 'tag_name' | cut -d\" -f4)
           echo "Latest release version: $LATEST_RELEASE"
           echo "RELEASE_VERSION=$LATEST_RELEASE" >> $GITHUB_ENV
+      
+      - name: Set release version from input
+        if: ${{ inputs.release-tag != '' }}
+        run: |
+          echo "Using provided release version: ${{ inputs.release-tag }}"
+          echo "RELEASE_VERSION=${{ inputs.release-tag }}" >> $GITHUB_ENV
 
       - name: Download APK
         run: |
@@ -39,8 +50,8 @@ jobs:
         uses: ./.github/workflows/actions/maestro_cli
         with:
           apk-path: "./app-profile.apk"
-          test-path: ".maestro/test.yaml"
-          report-name: "e-imunisasi-ui-test-report-api-${{ matrix.api }}"
+          test-path: ".maestro"
+          report-name: "e-imunisasi-ui-test-report-api-${{ matrix.payment }}-${{ matrix.api }}"
           record: "true"
           emulator-api: ${{ matrix.api }}
 
@@ -48,14 +59,14 @@ jobs:
         uses: actions/download-artifact@v4
         if: success() || failure()
         with:
-          name: "e-imunisasi-ui-test-report-api-${{ matrix.api }}"
+          name: "e-imunisasi-ui-test-report-api-${{ matrix.payment }}-${{ matrix.api }}"
           path: ./
 
       - name: Test Reporter
         uses: dorny/test-reporter@v1
         if: success() || failure()
         with:
-          name: Maestro UI Tests (API ${{ matrix.api }})
+          name: Maestro UI Tests (API ${{ matrix.payment }} - ${{ matrix.api }})
           path: "./report.xml"
           reporter: java-junit
           fail-on-error: true
