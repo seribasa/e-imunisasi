@@ -1,4 +1,4 @@
-appId: com.peltops.e_imunisasi
+appId: com.peltops.e_imunisasi.debug
 ---
 - runFlow: subflows/setup-chrome.yaml
 
