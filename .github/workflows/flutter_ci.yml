@@ -54,7 +54,7 @@ jobs:
     needs: unit-test
     strategy:
       matrix:
-        target: [apk --debug, appbundle --debug]
+        payment-gateway: [stripe, midtrans]
     steps:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -89,17 +89,21 @@ jobs:
           KEYSTORE_STORE_PASSWORD: ${{ secrets.DEBUG_KEYSTORE_PASSWORD }}
         working-directory: android
 
-      - name: Prepare env file
-        run: cp .env.dev .env
+      - name: Setup env for build
+        run: |
+          if [ "${{ matrix.payment-gateway }}" = "stripe" ]; then
+            echo "${{ secrets.ENV_STRIPE_DEV }}" > .env
+          else
+            echo "${{ secrets.ENV_MIDTRANS_DEV }}" > .env
+          fi
 
-      - name: Build ${{ matrix.target }}
-        run: flutter build ${{ matrix.target }}
+      - name: Build APK
+        run: flutter build apk --debug
 
       - name: Upload APK
-        if: matrix.target == 'apk --debug'
         uses: actions/upload-artifact@v4
         with:
-          name: apk
+          name: apk-${{ matrix.payment-gateway }}
           path: build/app/outputs/flutter-apk/app-debug.apk
           retention-days: 7
 
