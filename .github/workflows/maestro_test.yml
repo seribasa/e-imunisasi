@@ -27,7 +27,7 @@ jobs:
       - name: Get latest release version
         id: get_latest_release
         run: |
-          LATEST_RELEASE=$(curl -s https://api.github.com/repos/peltops/e-imunisasi/releases/latest | grep 'tag_name' | cut -d\" -f4)
+          LATEST_RELEASE=$(curl -s --location https://api.github.com/repos/peltops/e-imunisasi/releases/latest | grep 'tag_name' | cut -d\" -f4)
           echo "Latest release version: $LATEST_RELEASE"
           echo "RELEASE_VERSION=$LATEST_RELEASE" >> $GITHUB_ENV
 
