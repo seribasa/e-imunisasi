@@ -104,5 +104,10 @@ jobs:
           retention-days: 7
 
   ui-test:
-    permissions: read-all
+    permissions:
+      id-token: write
+      contents: read
+      checks: write
+      pull-requests: write
+      repository-projects: write
     uses: ./.github/workflows/maestro_test.yml
