@@ -1,0 +1,91 @@
+name: Maestro Test
+
+on:
+  push:
+  pull_request:
+
+permissions: read-all
+
+jobs:
+  ui-tests:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      checks: write
+      pull-requests: write
+      repository-projects: write
+    strategy:
+      fail-fast: false
+      matrix:
+        api: [34]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Download APK
+        run: |
+          wget -O app-profile.apk https://github.com/peltops/e-imunisasi/releases/download/v1.2.0/app-midtrans-v1.2.0-debug.apk
+
+      - name: Run UI Tests with Maestro
+        uses: ./.github/workflows/actions/maestro_cli
+        with:
+          apk-path: "./app-profile.apk"
+          test-path: ".maestro/test.yaml"
+          report-name: "e-imunisasi-ui-test-report-api-${{ matrix.api }}"
+          record: "true"
+          emulator-api: ${{ matrix.api }}
+
+      - name: Download Maestro Report
+        uses: actions/download-artifact@v4
+        if: success() || failure()
+        with:
+          name: "e-imunisasi-ui-test-report-api-${{ matrix.api }}"
+          path: ./
+
+      - name: Test Reporter
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Maestro UI Tests (API ${{ matrix.api }})
+          path: "./report.xml"
+          reporter: java-junit
+          fail-on-error: true
+
+  merge-test-report:
+    name: Merge Test Reports
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      checks: write
+      pull-requests: write
+      repository-projects: write
+    needs: ui-tests
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Download all test reports
+        uses: actions/download-artifact@v4
+        with:
+          # Download all artifacts with names starting with 'e-imunisasi-ui-test-report-api-'
+          pattern: "e-imunisasi-ui-test-report-api-*"
+          path: ./reports
+      - name: Install JUnit Report Merger
+        run: npm install -g junit-report-merger
+
+      - name: Merge JUnit Reports
+        run: |
+          mkdir -p merged-reports
+          junit-report-merger merged-reports/merged-report.xml 'reports/**/*.xml'
+
+      - name: Publish Merged Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Merged Maestro UI Test Report
+          path: ./merged-reports/merged-report.xml
+          reporter: java-junit
+          fail-on-error: true
