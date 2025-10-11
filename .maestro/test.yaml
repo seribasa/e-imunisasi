@@ -4,6 +4,8 @@ tags:
 ---
 - runFlow: subflows/setup-chrome.yaml
 
+- runFlow: onboarding-flow.yaml
+
 - launchApp:
     clearState: true
 
