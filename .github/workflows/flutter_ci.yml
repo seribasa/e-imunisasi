@@ -54,7 +54,7 @@ jobs:
     needs: unit-test
     strategy:
       matrix:
-        target: [apk --profile, appbundle --debug]
+        target: [apk --debug, appbundle --debug]
     steps:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -96,11 +96,11 @@ jobs:
         run: flutter build ${{ matrix.target }}
 
       - name: Upload APK
-        if: matrix.target == 'apk --profile'
+        if: matrix.target == 'apk --debug'
         uses: actions/upload-artifact@v4
         with:
           name: apk
-          path: build/app/outputs/flutter-apk/app-profile.apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
           retention-days: 7
 
   build-test-mac:
@@ -145,14 +145,14 @@ jobs:
         run: cp .env.dev .env
 
       - name: Build apk
-        run: flutter build apk --profile
+        run: flutter build apk --debug
 
       - uses: mobile-dev-inc/action-maestro-cloud@v1
         with:
           android-api-level: 34
           api-key: ${{ secrets.MAESTRO_API_KEY }}
           project-id: ${{ secrets.MAESTRO_PROJECT_ID }}
-          app-file: build/app/outputs/flutter-apk/app-profile.apk
+          app-file: build/app/outputs/flutter-apk/app-debug.apk
           include-tags: test
 
   ui-tests:
@@ -182,7 +182,7 @@ jobs:
       - name: Run UI Tests with Maestro
         uses: ./.github/workflows/actions/maestro_cli
         with:
-          apk-path: "./app-profile.apk"
+          apk-path: "./app-debug.apk"
           test-path: ".maestro/test.yaml"
           report-name: "e-imunisasi-ui-test-report-api-${{ matrix.api }}"
           record: "true"

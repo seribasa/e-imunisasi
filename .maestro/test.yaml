@@ -1,13 +1,12 @@
-appId: com.peltops.e_imunisasi
+appId: com.peltops.e_imunisasi.debug
 tags:
   - test
 ---
-
 - runFlow: subflows/setup-chrome.yaml
 
 - launchApp:
     clearState: true
-    
+
 - tapOn:
     text: Masuk dengan Seribase
     repeat: 3
