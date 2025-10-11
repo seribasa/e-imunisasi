@@ -180,6 +180,14 @@ jobs:
         if: steps.apk-cache.outputs.cache-hit != 'true' || steps.appbundle-cache.outputs.cache-hit != 'true'
         run: flutter build ${{ matrix.target }}
 
+      - uses: mobile-dev-inc/action-maestro-cloud@v1
+        with:
+          android-api-level: 34
+          api-key: ${{ secrets.MAESTRO_API_KEY }}
+          project-id: ${{ secrets.MAESTRO_PROJECT_ID }}
+          app-file: build/app/outputs/flutter-apk/app-profile.apk
+          include-tags: test
+
       - name: Upload APK
         if: matrix.target == 'apk --profile'
         uses: actions/upload-artifact@v4
