@@ -1,19 +1,53 @@
 appId: com.peltops.e_imunisasi.debug
 ---
-- runFlow: subflows/setup-chrome.yaml
+- launchApp:
+    clearState: true
+- clearState: com.android.chrome
 
-- runFlow: onboarding-flow.yaml
+# landing page
+- tapOn: Selanjutnya
+- tapOn: Ayo Mulai
+- tapOn: Masuk dengan Seribase
+- waitForAnimationToEnd:
+    timeout: 100000
 
-- killApp
-- launchApp
+- runFlow:
+    when:
+      visible:
+        id: signin_fre_dismiss_button
+    commands:
+      - tapOn:
+          id: signin_fre_dismiss_button
 
-- tapOn:
-    id: login_with_seribase_button
-    repeat: 3
-    delay: 1000
-    retryTapIfNoChange: true
-    waitToSettleTimeoutMs: 5000
+- runFlow:
+    when:
+      visible: Accept & continue
+    commands:
+      - tapOn: Accept & continue
 
+- runFlow:
+    when:
+      visible: No thanks
+    commands:
+      - tapOn: No thanks
+
+- waitForAnimationToEnd:
+    timeout: 10000
+
+- runFlow:
+    when:
+      visible: Enhanced ad privacy in Chrome
+    commands:
+      - scrollUntilVisible:
+          element:
+            id: ack_button
+      - tapOn:
+          id: ack_button
+
+# Login Page to Register Page
+- extendedWaitUntil:
+    visible: Register
+    timeout: 10000
 - tapOn: Register
 
 - runFlow:
@@ -57,7 +91,7 @@ appId: com.peltops.e_imunisasi.debug
           id: closeButton
 
 # Register Page - password
-- inputText: "Test123#"
+- inputText: 'Test123#'
 - tapOn: Next
 
 - runFlow:
@@ -68,7 +102,7 @@ appId: com.peltops.e_imunisasi.debug
           id: closeButton
 
 # Register Page - confirm pass
-- inputText: "Test123#"
+- inputText: 'Test123#'
 - tapOn: Next
 
 - runFlow:
