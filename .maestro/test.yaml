@@ -6,8 +6,7 @@ tags:
 
 - runFlow: onboarding-flow.yaml
 
-- launchApp:
-    clearState: true
+- launchApp
 
 - tapOn:
     text: Masuk dengan Seribase
