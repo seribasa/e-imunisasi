@@ -87,7 +87,7 @@ runs:
               arch: ${{ inputs.emulator-arch }}
               disable-animations: ${{ inputs.emulator-disable-animations }}
               target: google_apis_playstore
-              script: ${{ github.action_path }}/maestro.sh ${{ inputs.apk-path }} ${{ inputs.record }} ${{ inputs.video-res }} ${{ inputs.bit-rate }} ${{ inputs.test-path }}
+              script: ${{ github.action_path }}/enhance_maestro.sh ${{ inputs.apk-path }} ${{ inputs.record }} ${{ inputs.video-res }} ${{ inputs.bit-rate }} ${{ inputs.test-path }}
 
         - name: Upload report
           uses: actions/upload-artifact@v4
@@ -95,13 +95,6 @@ runs:
               name: "${{ inputs.report-name }}"
               path: |
                   /home/runner/.maestro/tests/**/*
-
-        - name: Set action result
-          if: always()
-          shell: bash
-          run: |
-              chmod +x ${{ github.action_path }}/action_result.kts
-              ${{ github.action_path }}/action_result.kts /home/runner/.maestro/tests/report.xml
 
         - name: Teardown
           shell: bash
