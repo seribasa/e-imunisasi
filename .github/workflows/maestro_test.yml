@@ -7,8 +7,6 @@ on:
         required: false
         type: string
 
-permissions: read-all
-
 jobs:
   ui-tests:
     runs-on: ubuntu-latest
