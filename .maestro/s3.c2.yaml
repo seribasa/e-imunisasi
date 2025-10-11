@@ -1,4 +1,4 @@
-appId: com.peltops.e_imunisasi.debug
+appId: com.peltops.e_imunisasi
 ---
 - launchApp:
     clearState: true
@@ -91,7 +91,7 @@ appId: com.peltops.e_imunisasi.debug
           id: closeButton
 
 # Register Page - password
-- inputText: 'Test123#'
+- inputText: "Test123#"
 - tapOn: Next
 
 - runFlow:
@@ -102,7 +102,7 @@ appId: com.peltops.e_imunisasi.debug
           id: closeButton
 
 # Register Page - confirm pass
-- inputText: 'Test123#'
+- inputText: "Test123#"
 - tapOn: Next
 
 - runFlow:
