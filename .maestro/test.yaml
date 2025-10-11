@@ -1,6 +1,9 @@
 appId: com.peltops.e_imunisasi
+tags:
+  - test
 ---
-- runFlow: setup-chrome.yaml
+
+- runFlow: subflows/setup-chrome.yaml
 
 - launchApp:
     clearState: true
