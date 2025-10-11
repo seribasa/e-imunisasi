@@ -178,14 +178,6 @@ jobs:
         with:
           name: apk
           path: ./
-          
-      - uses: mobile-dev-inc/action-maestro-cloud@v1
-        with:
-          android-api-level: ${{ matrix.api }}
-          api-key: ${{ secrets.MAESTRO_API_KEY }}
-          project-id: ${{ secrets.MAESTRO_PROJECT_ID }}
-          app-file: "./app-profile.apk"
-          include-tags: "test"
 
       - name: Run UI Tests with Maestro
         uses: ./.github/workflows/actions/maestro_cli
@@ -195,11 +187,6 @@ jobs:
           report-name: "e-imunisasi-ui-test-report-api-${{ matrix.api }}"
           record: "true"
           emulator-api: ${{ matrix.api }}
-          emulator-profile: "pixel_7_pro"
-          emulator-ram-size: "4096M"
-          emulator-heap-size: "1024M"
-          emulator-disable-animations: false
-          
 
       - name: Download Maestro Report
         uses: actions/download-artifact@v4
