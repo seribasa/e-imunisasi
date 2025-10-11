@@ -114,4 +114,6 @@ jobs:
       checks: write
       pull-requests: write
       repository-projects: write
+    needs: build
+    name: Run UI Tests
     uses: ./.github/workflows/maestro_test.yml
