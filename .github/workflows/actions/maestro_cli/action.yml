@@ -87,7 +87,7 @@ runs:
               arch: ${{ inputs.emulator-arch }}
               disable-animations: ${{ inputs.emulator-disable-animations }}
               target: google_apis_playstore
-              script: ${{ github.action_path }}/maestro.sh ${{ inputs.apk-path }} ${{ inputs.record }} ${{ inputs.video-res }} ${{ inputs.bit-rate }} ${{ inputs.test-path }}
+              script: ${{ github.action_path }}/enhance_maestro.sh ${{ inputs.apk-path }} ${{ inputs.record }} ${{ inputs.video-res }} ${{ inputs.bit-rate }} ${{ inputs.test-path }}
 
         - name: Upload report
           uses: actions/upload-artifact@v4
