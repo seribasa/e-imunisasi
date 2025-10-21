@@ -25,6 +25,8 @@ adb install "$APK_PATH"
 if [ -d "$TEST_PATH" ]; then
     # If TEST_PATH is a directory, run each .yaml file individually
     echo "Running Maestro tests in directory: $TEST_PATH"
+    mkdir -p "$HOME/.maestro/tests"
+    
     for test_file in "$TEST_PATH"/*.yaml; do
         echo "Processing test file: $test_file"
         test_name=$(basename "$test_file" .yaml)
@@ -33,8 +35,6 @@ if [ -d "$TEST_PATH" ]; then
             start_recording "$test_name"
         fi
 
-        mkdir -p "$HOME/.maestro/tests"
-
         export PATH="$PATH:$HOME/.maestro/bin"
         maestro test --format junit --output "$HOME/.maestro/tests/report_${test_name}.xml" "$test_file" || true
 
@@ -42,6 +42,16 @@ if [ -d "$TEST_PATH" ]; then
             stop_recording "$test_name"
         fi
     done
+    
+    # Merge all individual test reports into a single report.xml
+    echo "Merging test reports into report.xml..."
+    if command -v junit-report-merger &> /dev/null; then
+        junit-report-merger "$HOME/.maestro/tests/report.xml" "$HOME/.maestro/tests/report_*.xml"
+    else
+        echo "junit-report-merger not found, installing..."
+        npm install -g junit-report-merger
+        junit-report-merger "$HOME/.maestro/tests/report.xml" "$HOME/.maestro/tests/report_*.xml"
+    fi
 else
     # Single test file
     test_name=$(basename "$TEST_PATH" .yaml)
