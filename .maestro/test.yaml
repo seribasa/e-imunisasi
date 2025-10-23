@@ -9,7 +9,7 @@ tags:
 - launchApp
 
 - tapOn:
-    text: Masuk dengan Seribase
+    text: Masuk dengan Seribus
     repeat: 3
     delay: 1000
     retryTapIfNoChange: true
