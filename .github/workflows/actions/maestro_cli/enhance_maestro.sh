@@ -38,20 +38,27 @@ stop_recording() {
     echo "Waiting for recording to finalize..."
     sleep 5
     
-    # Verify file exists and has size
-    local file_size=$(adb shell "ls -l /data/local/tmp/maestro_${test_name}.mp4 2>/dev/null | awk '{print \$4}'")
-    if [ -n "$file_size" ] && [ "$file_size" -gt 0 ]; then
-        echo "Recording file size: $file_size bytes"
-        adb pull "/data/local/tmp/maestro_${test_name}.mp4" "$HOME/.maestro/tests/" || true
+    # Check if file exists on device
+    if adb shell "test -f /data/local/tmp/maestro_${test_name}.mp4 && echo exists" | grep -q "exists"; then
+        # Get file size
+        local file_size=$(adb shell "stat -c%s /data/local/tmp/maestro_${test_name}.mp4 2>/dev/null || wc -c < /data/local/tmp/maestro_${test_name}.mp4" | tr -d '\r' | tr -d ' ')
         
-        # Clean up the file from device
-        adb shell "rm -f /data/local/tmp/maestro_${test_name}.mp4" || true
+        if [ -n "$file_size" ] && [ "$file_size" -gt 0 ] 2>/dev/null; then
+            echo "Recording file size: $file_size bytes"
+            adb pull "/data/local/tmp/maestro_${test_name}.mp4" "$HOME/.maestro/tests/" || true
+            
+            # Clean up the file from device
+            adb shell "rm -f /data/local/tmp/maestro_${test_name}.mp4" || true
+        else
+            echo "Warning: Recording file is empty or size cannot be determined"
+        fi
     else
-        echo "Warning: Recording file not found or empty"
+        echo "Warning: Recording file not found on device"
     fi
 }
 
-adb install "$APK_PATH"
+# Install APK with -r (replace existing app) and -d (allow downgrade)
+adb install -r -d "$APK_PATH"
 
 if [ -d "$TEST_PATH" ]; then
     # If TEST_PATH is a directory, run each .yaml file individually
