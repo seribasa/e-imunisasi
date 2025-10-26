@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Download APK
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: apk-${{ matrix.payment }}
 
@@ -41,7 +41,7 @@ jobs:
           emulator-api: ${{ matrix.api }}
 
       - name: Download Maestro Report
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         if: success() || failure()
         with:
           name: "e-imunisasi-ui-test-report-api-${{ matrix.payment }}-${{ matrix.api }}"
@@ -71,7 +71,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Download all test reports
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           # Download all artifacts with names starting with 'e-imunisasi-ui-test-report-api-'
           pattern: "e-imunisasi-ui-test-report-api-*"
