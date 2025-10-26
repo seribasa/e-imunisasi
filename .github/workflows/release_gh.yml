@@ -31,7 +31,7 @@ jobs:
 
       - name: Read Version Flutter
         id: read_fvm_config
-        uses: juliangruber/read-file-action@v1.1.6
+        uses: juliangruber/read-file-action@v1.1.7
         with:
           path: ./.fvmrc
 
