@@ -1,4 +1,4 @@
-xname: Test and Build Flutter
+name: Test and Build Flutter
 
 on:
   push:
