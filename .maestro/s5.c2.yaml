@@ -1,0 +1,13 @@
+appId: com.peltops.e_imunisasi.debug
+---
+- launchApp
+- extendedWaitUntil:
+    visible: Masuk dengan Seribase
+    timeout: 1000000
+- tapOn: Masuk dengan Seribase
+- tapOn: Forgot Password?
+- tapOn:
+    text: Email
+    index: 1
+- inputText: lailabalqis1605@gmail.com
+- tapOn: Submit
