@@ -1,0 +1,65 @@
+appId: com.peltops.e_imunisasi.debug
+---
+- launchApp:
+    clearState: true
+- clearState: com.android.chrome
+
+# landing page
+- extendedWaitUntil:
+    visible: Selanjutnya
+    timeout: 100000
+- tapOn: Selanjutnya
+- tapOn: Ayo Mulai
+- tapOn: Masuk dengan Seribase
+- waitForAnimationToEnd:
+    timeout: 100000
+
+- runFlow:
+    when:
+      visible:
+        id: signin_fre_dismiss_button
+    commands:
+      - tapOn:
+          id: signin_fre_dismiss_button
+
+- runFlow:
+    when:
+      visible: Accept & continue
+    commands:
+      - tapOn: Accept & continue
+
+- runFlow:
+    when:
+      visible: No thanks
+    commands:
+      - tapOn: No thanks
+
+- waitForAnimationToEnd:
+    timeout: 10000
+
+- runFlow:
+    when:
+      visible: Enhanced ad privacy in Chrome
+    commands:
+      - scrollUntilVisible:
+          element:
+            id: ack_button
+      - tapOn:
+          id: ack_button
+
+# Login Page
+- extendedWaitUntil:
+    visible: Forgot Password?
+    timeout: 10000
+- tapOn: Forgot Password?
+
+#Account Recovery Page
+- extendedWaitUntil:
+    visible: Forgot Your Password?
+    timeout: 100000
+- tapOn:
+    text: Email
+    index: 1
+- inputText: peltopsqa@gmail.com
+- tapOn: Submit
+- assertVisible: You should receive an email shortly with further instructions.
