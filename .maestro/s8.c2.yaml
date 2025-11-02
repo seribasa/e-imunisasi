@@ -1,0 +1,28 @@
+appId: com.peltops.e_imunisasi.debug
+---
+- swipe:
+    from:
+      id: status_bar_end_side_container
+    direction: DOWN
+- tapOn:
+    id: icon
+- tapOn:
+    id: wifi_toggle
+- tapOn:
+    id: mobile_toggle
+- tapOn:
+    id: done_button
+- swipe:
+    from:
+      id: no_notifications
+    direction: UP
+- launchApp
+- extendedWaitUntil:
+    visible: PIN
+    timeout: 100000
+- tapOn: PIN
+- extendedWaitUntil:
+    visible: PIN
+    timeout: 100000
+- inputText: '1234'
+- tapOn: Selanjutnya
