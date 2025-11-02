@@ -77,4 +77,4 @@ appId: com.peltops.e_imunisasi.debug
           id: closeButton
 
 - tapOn: Sign In
-- assertVisible: Invalid username or password
+- assertVisible: Invalid username or password.
