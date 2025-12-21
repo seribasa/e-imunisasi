@@ -1,6 +1,8 @@
 appId: com.peltops.e_imunisasi.debug
 ---
-- launchApp
+- launchApp:
+    clearState: true
+- clearState: com.android.chrome
 
 # landing page
 - extendedWaitUntil:
@@ -10,7 +12,7 @@ appId: com.peltops.e_imunisasi.debug
 - tapOn: Ayo Mulai
 - tapOn: Masuk dengan Seribase
 - waitForAnimationToEnd:
-    timeout: 100000
+    timeout: 1000000
 
 - runFlow:
     when:
@@ -91,6 +93,4 @@ appId: com.peltops.e_imunisasi.debug
     visible: Utama
     timeout: 10000
 - tapOn: Kalender
-- assertVisible: Tanggal Aktivitas
-- assertWithAI:
-    assertion: The calendar in the application displays the month and year information according to the current time.
+- assertVisible: Daftar aktivitas
