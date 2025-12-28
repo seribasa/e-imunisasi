@@ -93,4 +93,4 @@ appId: com.peltops.e_imunisasi.debug
     visible: Utama
     timeout: 10000
 - tapOn: Kalender
-- assertVisible: Daftar aktivitas
+- assertVisible: '.*Daftar aktivitas.*'
