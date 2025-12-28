@@ -76,7 +76,6 @@ appId: com.peltops.e_imunisasi.debug
       - tapOn:
           id: closeButton
 
-- tapOn: Kembali
 - tapOn: Sign In
 
 #Input PIN
