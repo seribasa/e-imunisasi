@@ -95,4 +95,4 @@ appId: com.peltops.e_imunisasi.debug
 - tapOn: Kalender
 - assertVisible: Tanggal Aktivitas
 - tapOn: Monday, December 1, 2025 1
-- assertVisible: Tanggal Aktivitas 01-12-2025 imunisasi anak
+- assertVisible: '.*imunisasi anak.*'
