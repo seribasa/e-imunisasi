@@ -77,4 +77,7 @@ appId: com.peltops.e_imunisasi.debug
           id: closeButton
 
 - tapOn: Sign In
+- extendedWaitUntil:
+    visible: PIN
+    timeout: 10000
 - assertVisible: PIN
