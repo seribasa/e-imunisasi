@@ -134,6 +134,7 @@ class _ChildProfileScaffold extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: TextFormCustom(
+                                  key: const Key('child_profile_place_of_birth_field'),
                                   initialValue: child?.tempatLahir,
                                   label: AppConstant.LABEL_PLACE_OF_BIRTH,
                                   onChanged: (placeOfBirth) {
@@ -146,6 +147,7 @@ class _ChildProfileScaffold extends StatelessWidget {
                               HorizontalSpacer(val: AppPadding.paddingS),
                               Expanded(
                                 child: TextFormCustom(
+                                  key: const Key('child_profile_date_of_birth_field'),
                                   onTap: () async {
                                     final date = await Picker.pickDate(
                                       context,
