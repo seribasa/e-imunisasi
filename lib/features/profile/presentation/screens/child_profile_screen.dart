@@ -133,42 +133,46 @@ class _ChildProfileScaffold extends StatelessWidget {
                           Row(
                             children: [
                               Expanded(
-                                child: TextFormCustom(
-                                  key: const Key('child_profile_place_of_birth_field'),
-                                  initialValue: child?.tempatLahir,
-                                  label: AppConstant.LABEL_PLACE_OF_BIRTH,
-                                  onChanged: (placeOfBirth) {
-                                    bloc.add(
-                                      OnChangePlaceOfBirthEvent(placeOfBirth),
-                                    );
-                                  },
+                                child: Semantics(
+                                  identifier: 'child_profile_place_of_birth_field',
+                                  child: TextFormCustom(
+                                    initialValue: child?.tempatLahir,
+                                    label: AppConstant.LABEL_PLACE_OF_BIRTH,
+                                    onChanged: (placeOfBirth) {
+                                      bloc.add(
+                                        OnChangePlaceOfBirthEvent(placeOfBirth),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                               HorizontalSpacer(val: AppPadding.paddingS),
                               Expanded(
-                                child: TextFormCustom(
-                                  key: const Key('child_profile_date_of_birth_field'),
-                                  onTap: () async {
-                                    final date = await Picker.pickDate(
-                                      context,
-                                      currentTime: state.child?.tanggalLahir,
-                                    );
-                                    if (date != null) {
-                                      bloc.add(
-                                        OnChangeDateOfBirthEvent(date),
+                                child: Semantics(
+                                  identifier: 'child_profile_date_of_birth_field',
+                                  child: TextFormCustom(
+                                    onTap: () async {
+                                      final date = await Picker.pickDate(
+                                        context,
+                                        currentTime: state.child?.tanggalLahir,
                                       );
-                                    }
-                                  },
-                                  readOnly: true,
-                                  label: AppConstant.LABEL_DATE_OF_BIRTH,
-                                  hintText: () {
-                                    if (state.child?.tanggalLahir == null) {
-                                      return AppConstant
-                                          .LABEL_CHOICE_DATE_OF_BIRTH;
-                                    }
-                                    return (state.child?.tanggalLahir)
-                                        .formattedDate();
-                                  }(),
+                                      if (date != null) {
+                                        bloc.add(
+                                          OnChangeDateOfBirthEvent(date),
+                                        );
+                                      }
+                                    },
+                                    readOnly: true,
+                                    label: AppConstant.LABEL_DATE_OF_BIRTH,
+                                    hintText: () {
+                                      if (state.child?.tanggalLahir == null) {
+                                        return AppConstant
+                                            .LABEL_CHOICE_DATE_OF_BIRTH;
+                                      }
+                                      return (state.child?.tanggalLahir)
+                                          .formattedDate();
+                                    }(),
+                                  ),
                                 ),
                               ),
                             ],
