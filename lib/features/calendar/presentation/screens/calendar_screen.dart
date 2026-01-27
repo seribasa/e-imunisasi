@@ -44,8 +44,10 @@ class _CalendarScaffold extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            key: const Key('calendar_add_activity_button'),
-            icon: Icon(Icons.add),
+            icon: Icon(
+              Icons.add,
+              semanticLabel: 'calendar_add_activity_button',
+            ),
             onPressed: () => context.push(
               CalendarRoutePaths.addCalendar.fullPath,
               extra: {

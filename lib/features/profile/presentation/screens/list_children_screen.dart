@@ -93,8 +93,10 @@ class ListChildrenScreen extends StatelessWidget {
         floatingActionButton: BlocBuilder<ChildProfileBloc, ChildProfileState>(
           builder: (context, state) {
             return FloatingActionButton(
-              key: const Key('child_profile_add_child_button'),
-              child: Icon(Icons.add),
+              child: Icon(
+                Icons.add,
+                semanticLabel: 'child_profile_add_child_button',
+              ),
               onPressed: () {
                 context.push(
                   ProfileRoutePaths.addChildren.fullPath,
