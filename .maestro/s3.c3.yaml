@@ -115,8 +115,7 @@ appId: com.peltops.e_imunisasi.debug
       - tapOn:
           id: closeButton
 
-- scrollUntilVisible:
-    element: Register
+- tapOn: Next
 
 # Register Page - first name
 - tapOn:
@@ -130,6 +129,8 @@ appId: com.peltops.e_imunisasi.debug
     commands:
       - tapOn:
           id: closeButton
+
+- tapOn: Next
 
 # Register Page - last name
 - tapOn:
@@ -145,8 +146,6 @@ appId: com.peltops.e_imunisasi.debug
           id: closeButton
 
 # Register Page - submit
-- tapOn:
-    text: Register
-    index: 1
+- pressKey: Enter
 
 - assertVisible: Email already exists.
