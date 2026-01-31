@@ -89,8 +89,6 @@ appId: com.peltops.e_imunisasi.debug
       - tapOn:
           id: closeButton
 
-- pressKey: Enter
-
 # Register Page - password
 - tapOn:
     text: Password
@@ -103,8 +101,6 @@ appId: com.peltops.e_imunisasi.debug
     commands:
       - tapOn:
           id: closeButton
-
-- pressKey: Enter
 
 # Register Page - confirm pass
 - tapOn:
@@ -119,7 +115,8 @@ appId: com.peltops.e_imunisasi.debug
       - tapOn:
           id: closeButton
 
-- pressKey: Enter
+- scrollUntilVisible:
+    element: Register
 
 # Register Page - first name
 - tapOn:
@@ -133,8 +130,6 @@ appId: com.peltops.e_imunisasi.debug
     commands:
       - tapOn:
           id: closeButton
-
-- pressKey: Enter
 
 # Register Page - last name
 - tapOn:
