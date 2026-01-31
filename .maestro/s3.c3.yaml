@@ -81,7 +81,6 @@ appId: com.peltops.e_imunisasi.debug
           id: closeButton
 
 - inputText: peltopsqa@gmail.com
-- tapOn: Next
 
 - runFlow:
     when:
@@ -91,8 +90,10 @@ appId: com.peltops.e_imunisasi.debug
           id: closeButton
 
 # Register Page - password
-- inputText: "Test123!"
-- tapOn: Next
+- tapOn:
+    text: Password
+    index: 1
+- inputText: 'Test123!'
 
 - runFlow:
     when:
@@ -102,8 +103,10 @@ appId: com.peltops.e_imunisasi.debug
           id: closeButton
 
 # Register Page - confirm pass
-- inputText: "Test123!"
-- tapOn: Next
+- tapOn:
+    text: Confirm password
+    index: 1
+- inputText: 'Test123!'
 
 - runFlow:
     when:
@@ -111,10 +114,14 @@ appId: com.peltops.e_imunisasi.debug
     commands:
       - tapOn:
           id: closeButton
+
+- tapOn: Next
 
 # Register Page - first name
+- tapOn:
+    text: First name
+    index: 1
 - inputText: Test
-- tapOn: Next
 
 - runFlow:
     when:
@@ -123,8 +130,22 @@ appId: com.peltops.e_imunisasi.debug
       - tapOn:
           id: closeButton
 
+- tapOn: Next
+
 # Register Page - last name
+- tapOn:
+    text: Last name
+    index: 1
 - inputText: QA
+
+- runFlow:
+    when:
+      visible: Try out your stylus
+    commands:
+      - tapOn:
+          id: closeButton
+
 # Register Page - submit
 - pressKey: Enter
-- assertVisible: Email already exists.
+
+- assertVisible: '.*Email already exists.*'
