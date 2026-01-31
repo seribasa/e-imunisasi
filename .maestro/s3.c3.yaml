@@ -148,4 +148,4 @@ appId: com.peltops.e_imunisasi.debug
 # Register Page - submit
 - pressKey: Enter
 
-- assertVisible: Email already exists.
+- assertVisible: '.*Email already exists.*'
