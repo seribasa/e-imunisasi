@@ -93,10 +93,9 @@ appId: com.peltops.e_imunisasi.debug
     visible: Utama
     timeout: 10000
 - tapOn: Kalender
-- tapOn:
-    point: 88%,5%
+- tapOn: calendar_add_activity_button
 - assertVisible: Tambah Aktivitas
-- tapOn: Tanggal Pilih tanggal
+- tapOn: '.*Pilih tanggal.*'
 - tapOn: OKE
 - tapOn: Simpan
 - assertVisible: Pastikan semua data terisi
