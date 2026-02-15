@@ -93,6 +93,5 @@ appId: com.peltops.e_imunisasi.debug
     visible: Utama
     timeout: 10000
 - tapOn: Kalender
-- tapOn:
-    point: 88%,5%
+- tapOn: calendar_add_activity_button
 - assertVisible: Tambah Aktivitas
