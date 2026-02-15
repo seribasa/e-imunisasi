@@ -1,6 +1,8 @@
 appId: com.peltops.e_imunisasi.debug
 ---
-- launchApp
+- launchApp:
+    clearState: true
+- clearState: com.android.chrome
 
 # landing page
 - extendedWaitUntil:
@@ -74,7 +76,6 @@ appId: com.peltops.e_imunisasi.debug
       - tapOn:
           id: closeButton
 
-- tapOn: Kembali
 - tapOn: Sign In
 
 # PIN
@@ -100,5 +101,5 @@ appId: com.peltops.e_imunisasi.debug
 - assertVisible: qr code
 - assertVisible: Galang
 - assertVisible: Rizky Faturriza
-- assertVisible: 'Tanggal :'
-- assertVisible: 'Jam :'
+- assertVisible: "19 January 2026"
+- assertVisible: "09:00 - 10:00"
