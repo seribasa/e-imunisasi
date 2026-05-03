@@ -27,7 +27,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Read Version Flutter
         id: read_fvm_config
