@@ -33,7 +33,7 @@ dependencies:
   form_builder_validators: ^11.0.0
   image_picker: ^1.1.2
   country_code_picker: ^3.0.0
-  fl_chart: ^0.68.0
+  fl_chart: ^0.71.0
   math_expressions: ^2.6.0
   cached_network_image: ^3.4.1
   shimmer: ^3.0.0
