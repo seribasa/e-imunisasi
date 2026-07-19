@@ -42,7 +42,7 @@ jobs:
       - name: Setup Ruby, Bundler, and Gemfile dependencies
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.2.2'
+          ruby-version: '3.4.10'
           bundler-cache: true
           working-directory: android
 
